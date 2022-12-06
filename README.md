@@ -6,5 +6,5 @@ Open in VS Code and open Devcontainer
 ## Run
 From the terminal inside the Devcontainer...
 ```
-poetry run python {day_number}.py
+poetry run python day{day_number}.py
 ```
