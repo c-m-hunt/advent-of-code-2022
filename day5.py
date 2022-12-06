@@ -2,10 +2,11 @@ from typing import List, Tuple
 
 import utils
 
-data = utils.get_input(5)
+import utils
 
 
-def parse_data(data: List[str]) -> (Tuple[List[List[str]]], Tuple[int, int, int]):
+def load_and_parse_data(day: int, test: bool = False) -> (Tuple[List[List[str]]], Tuple[int, int, int]):
+    data = utils.get_input(day, test)
     instructions = []
     cols = []
 
@@ -38,31 +39,29 @@ def parse_data(data: List[str]) -> (Tuple[List[List[str]]], Tuple[int, int, int]
     return stacks, instructions
 
 
-stacks, instructions = parse_data(data)
-
-
-def process_part_1(stacks, instructions):
+def solve_part_1(data: Tuple[any, any]) -> str:
+    stacks, instructions = data
     for inst in instructions:
         for i in range(inst[0]):
             stacks[inst[2]-1].append(stacks[inst[1]-1].pop())
-    return stacks
+    return "".join([s[-1]
+                    for s in stacks])
 
 
-print("Part 1:", "".join([s[-1]
-      for s in process_part_1(stacks, instructions)]))
-
-stacks, instructions = parse_data(data)
-
-
-def process_part_2(stacks, instructions):
+def solve_part_2(data: Tuple[any, any]) -> str:
+    stacks, instructions = data
     for inst in instructions:
         to_move = stacks[inst[1]-1][len(stacks[inst[1]-1]) - (inst[0]):]
         stacks[inst[1]-1] = stacks[inst[1] -
                                    1][:len(stacks[inst[1]-1]) - (inst[0])]
         stacks[inst[2]-1] = stacks[inst[2]-1] + to_move
 
-    return stacks
+    return "".join([s[-1]
+                    for s in stacks])
 
 
-print("Part 2:", "".join([s[-1]
-      for s in process_part_2(stacks, instructions)]))
+if __name__ == "__main__":
+    data = load_and_parse_data(5)
+    print("Part 1:", solve_part_1(data))
+    data = load_and_parse_data(5)
+    print("Part 2:", solve_part_2(data))
