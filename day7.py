@@ -22,7 +22,6 @@ def solve_part_2(data):
     for key, size in dir_size.items():
         pot_remaining_size = max_size - (intial_size - size)
         if pot_remaining_size < req_size:
-            print(key, size, pot_remaining_size, "Continue")
             continue
         if curr_closest is None or pot_remaining_size < curr_closest:
             curr_closest, curr_closest_size = pot_remaining_size, size
