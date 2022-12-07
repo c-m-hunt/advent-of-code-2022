@@ -15,9 +15,7 @@ def solve_part_1(data: List[str]) -> int:
 
 
 def solve_part_2(data):
-    dir_size = get_dir_sizes(data)
-    max_size = 70000000
-    req_size = 30000000
+    dir_size, max_size, req_size = get_dir_sizes(data), 70000000, 30000000
     intial_size = dir_size["/"]
     curr_closest = None
     curr_closest_size = None
@@ -27,33 +25,23 @@ def solve_part_2(data):
             print(key, size, pot_remaining_size, "Continue")
             continue
         if curr_closest is None or pot_remaining_size < curr_closest:
-            curr_closest = pot_remaining_size
-            curr_closest_size = size
+            curr_closest, curr_closest_size = pot_remaining_size, size
     return curr_closest_size
 
 
 def get_dir_sizes(data):
-    curr_dir = []
-    dir_size = {}
+    curr_dir, dir_size = [], {}
     for line in data:
         if line.startswith("$ cd"):
             directory = line.split(" ")[-1]
-            if directory == "..":
-                curr_dir.pop()
-            else:
-                curr_dir.append(directory)
+            curr_dir.pop() if directory == ".." else curr_dir.append(directory)
             continue
-        if line.startswith("$ ls"):
+        if line.startswith("$ ls") or line.startswith("dir"):
             continue
-        if line.startswith("dir"):
-            continue
-        parts = line.split(" ")
-        size = int(parts[0])
-        name = parts[1]
+        size = int(line.split(" ")[0])
         for i in range(len(curr_dir)):
             key = "/".join(curr_dir[:i + 1])
             dir_size[key] = dir_size.get(key, 0) + size
-
     return dir_size
 
 
