@@ -5,15 +5,14 @@ import utils
 DAY = 8
 
 
-def load_and_parse_data(day: int, test: bool = False) -> List[str]:
+def load_and_parse_data(day: int, test: bool = False) -> np.array:
     data = utils.get_input(day, test)
     return np.array([[int(i) for i in line] for line in data])
 
 
 def solve_part_1(data):
     count = 0
-    height = data.shape[0]
-    width = data.shape[1]
+    height, width = data.shape
     for i in range(height):
         for j in range(width):
             if i == 0 or j == 0 or i == height - 1 or j == width - 1:
@@ -31,8 +30,7 @@ def solve_part_1(data):
 
 def solve_part_2(data):
     scenic = []
-    height = data.shape[0]
-    width = data.shape[1]
+    height, width = data.shape
     for i in range(height):
         for j in range(width):
             tree = data[i][j]
