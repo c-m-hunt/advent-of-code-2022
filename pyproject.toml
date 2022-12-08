@@ -10,6 +10,7 @@ packages = [{include = "advent_2022"}]
 python = "^3.10"
 pytest = "^7.2.0"
 pytest-watch = "^4.2.0"
+numpy = "^1.23.5"
 
 
 [build-system]
