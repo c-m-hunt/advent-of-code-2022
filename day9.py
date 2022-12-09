@@ -11,13 +11,22 @@ def load_and_parse_data(day: int, test: bool = False) -> List[str]:
     return [l.split(" ") for l in data]
 
 
-def solve_part_1(data):
-    visited = np.zeros((1000, 1000))
-    H, T = [4, 0], [4, 0]
-    visited[T[0], T[1]] = 1
+def new_pos(h, t):
+    if abs(h[0] - t[0]) > 1 or abs(h[1] - t[1]) > 1:
+        for move_idx in range(2):
+            if h[move_idx] == t[move_idx]:
+                continue
+            move = 1 if h[move_idx] > t[move_idx] else -1
+            t[move_idx] += move
+    return t
+
+
+def solve_rope(data, tail_length):
+    visited = np.zeros((10000, 10000))
+    h, tail = [4, 0], [[4, 0] for l in range(tail_length)]
+    visited[tail[0][0], tail[0][1]] = 1
     for l in data:
         direction, distance = l[0], int(l[1])
-        print(direction, distance)
         if direction == "U":
             idx, step = 0, -1
         elif direction == "D":
@@ -28,27 +37,25 @@ def solve_part_1(data):
             idx, step = 1, 1
 
         for i in range(distance):
-            H[idx] += step
-            if abs(H[0] - T[0]) > 1 or abs(H[1] - T[1]) > 1:
-                for move_idx in range(2):
-                    if H[move_idx] == T[move_idx]:
-                        continue
-                    move = 1 if H[move_idx] > T[move_idx] else -1
-                    T[move_idx] += move
-            print("H:", H, "T:", T)
-            visited[T[0], T[1]] = 1
+            h[idx] += step
+            for j, _ in enumerate(tail):
+                follow = tail[j - 1] if j > 0 else h
+                tail[j] = new_pos(follow, tail[j])
+                if j == tail_length - 1:
+                    visited[tail[j][0], tail[j][1]] = 1
 
-    print(visited)
-    # return 3
     return np.sum(visited)
 
 
+def solve_part_1(data):
+    return solve_rope(data, 1)
+
+
 def solve_part_2(data):
-    pass
+    return solve_rope(data, 9)
 
 
 if __name__ == "__main__":
     data = load_and_parse_data(DAY)
-    print(data)
     print("Part 1:", solve_part_1(data))
     print("Part 2:", solve_part_2(data))
