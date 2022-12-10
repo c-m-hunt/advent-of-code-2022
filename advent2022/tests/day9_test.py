@@ -1,6 +1,6 @@
 import unittest
 # Change the day imprt, day number and expected results
-import day9 as puzzle
+from advent2022 import day9 as puzzle
 DAY = 9
 RESULT_PART_1 = 13
 RESULT_PART_2 = 1

@@ -1,5 +1,5 @@
+from advent2022 import day5
 import unittest
-import day5
 
 
 class TestDay5(unittest.TestCase):

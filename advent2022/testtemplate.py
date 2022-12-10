@@ -1,9 +1,10 @@
 import unittest
-import day8 as puzzle
-
-DAY = 8
+# Change the day imprt, day number and expected results
+from advent2022 import day7 as puzzle
+DAY = None
 RESULT_PART_1 = 21
-RESULT_PART_2 = 8
+RESULT_PART_2 = None
+#######################
 
 
 class TestDaay(unittest.TestCase):

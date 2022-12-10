@@ -1,5 +1,5 @@
 import unittest
-import day10 as puzzle
+from advent2022 import day10 as puzzle
 DAY = 10
 RESULT_PART_1 = 13140
 

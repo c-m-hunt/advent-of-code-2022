@@ -1,6 +1,6 @@
 from typing import List
 
-import utils
+from advent2022 import utils
 
 DAY = 7
 

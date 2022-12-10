@@ -1,6 +1,6 @@
 from typing import List
 import numpy as np
-import utils
+from advent2022 import utils
 
 DAY = 10
 
@@ -12,7 +12,6 @@ def load_and_parse_data(day: int, test: bool = False) -> List[str]:
 
 def get_strengths(data):
     strengths = [1]
-
     for instruction in data:
         prev_strength = strengths[-1]
         if len(instruction) == 1:
@@ -28,7 +27,6 @@ def get_strengths(data):
 def solve_part_1(data):
     sum_strengths = [20, 60, 100, 140, 180, 220]
     strengths = get_strengths(data)
-
     return sum([idx * strengths[idx - 1] for idx in sum_strengths])
 
 

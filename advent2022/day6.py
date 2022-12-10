@@ -1,6 +1,6 @@
 from typing import List
 
-import utils
+from advent2022 import utils
 
 
 def load_and_parse_data(day: int, test: bool = False) -> List[str]:

@@ -1,8 +1,6 @@
 from typing import List, Tuple
 
-import utils
-
-import utils
+from advent2022 import utils
 
 
 def load_and_parse_data(day: int, test: bool = False) -> (Tuple[List[List[str]]], Tuple[int, int, int]):

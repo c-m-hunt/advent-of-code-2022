@@ -1,5 +1,5 @@
 import unittest
-import day7 as puzzle
+from advent2022 import day7 as puzzle
 
 DAY = 7
 
