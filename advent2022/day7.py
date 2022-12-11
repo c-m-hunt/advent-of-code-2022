@@ -2,8 +2,6 @@ from typing import List
 
 from advent2022 import utils
 
-DAY = 7
-
 
 def load_and_parse_data(day: int, test: bool = False) -> List[str]:
     return utils.get_input(day, test)
@@ -42,9 +40,3 @@ def get_dir_sizes(data):
             key = "/".join(curr_dir[:i + 1])
             dir_size[key] = dir_size.get(key, 0) + size
     return dir_size
-
-
-if __name__ == "__main__":
-    data = load_and_parse_data(DAY)
-    print("Part 1:", solve_part_1(data))
-    print("Part 2:", solve_part_2(data))

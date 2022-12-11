@@ -2,8 +2,6 @@ from typing import List
 import numpy as np
 from advent2022 import utils
 
-DAY = 10
-
 
 def load_and_parse_data(day: int, test: bool = False) -> List[str]:
     data = utils.get_input(day, test)
@@ -41,9 +39,3 @@ def solve_part_2(data):
     for row in range(display.shape[0]):
         print("".join(["X" if int(display[row, col]) ==
               1 else " " for col in range(display.shape[1])]))
-
-
-if __name__ == "__main__":
-    data = load_and_parse_data(DAY)
-    print("Part 1:", solve_part_1(data))
-    print("Part 2:", solve_part_2(data))

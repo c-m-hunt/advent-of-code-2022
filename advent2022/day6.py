@@ -23,9 +23,3 @@ def find_marker(data: List[str], marker_length: int) -> int:
         if len(unique) == marker_length:
             return test + marker_length
         test += 1
-
-
-if __name__ == "__main__":
-    data = load_and_parse_data(6)
-    print("Part 1:", solve_part_1(data))
-    print("Part 2:", solve_part_2(data))

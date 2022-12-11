@@ -2,8 +2,6 @@ from typing import List
 import numpy as np
 from advent2022 import utils
 
-DAY = 8
-
 
 def load_and_parse_data(day: int, test: bool = False) -> np.array:
     data = utils.get_input(day, test)
@@ -50,9 +48,3 @@ def solve_part_2(data):
                 tree_scenic.append(count)
             scenic.append(np.prod(tree_scenic))
     return max(scenic)
-
-
-if __name__ == "__main__":
-    data = load_and_parse_data(DAY)
-    print("Part 1:", solve_part_1(data))
-    print("Part 2:", solve_part_2(data))

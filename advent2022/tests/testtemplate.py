@@ -2,12 +2,12 @@ import unittest
 # Change the day imprt, day number and expected results
 from advent2022 import day7 as puzzle
 DAY = None
-RESULT_PART_1 = 21
+RESULT_PART_1 = None
 RESULT_PART_2 = None
 #######################
 
 
-class TestDaay(unittest.TestCase):
+class TestDay(unittest.TestCase):
     def test_part1(self):
         if RESULT_PART_1 is None:
             self.skipTest("No result for part 1")

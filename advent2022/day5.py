@@ -56,10 +56,3 @@ def solve_part_2(data: Tuple[any, any]) -> str:
 
     return "".join([s[-1]
                     for s in stacks])
-
-
-if __name__ == "__main__":
-    data = load_and_parse_data(5)
-    print("Part 1:", solve_part_1(data))
-    data = load_and_parse_data(5)
-    print("Part 2:", solve_part_2(data))

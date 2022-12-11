@@ -52,9 +52,3 @@ def solve_part_1(data):
 
 def solve_part_2(data):
     return solve_rope(data, 9)
-
-
-if __name__ == "__main__":
-    data = load_and_parse_data(DAY)
-    print("Part 1:", solve_part_1(data))
-    print("Part 2:", solve_part_2(data))
