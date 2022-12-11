@@ -3,7 +3,7 @@ import sys
 
 DAY = sys.argv[1]
 
-puzzle = module = importlib.import_module("advent2022.day" + DAY)
+puzzle = importlib.import_module("advent2022.day" + DAY)
 
 if __name__ == "__main__":
     data = puzzle.load_and_parse_data(DAY)

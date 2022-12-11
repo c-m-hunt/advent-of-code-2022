@@ -1,12 +1,18 @@
 import unittest
-from advent2022 import day6
+import importlib
+# Change the day imprt, day number and expected results
+DAY = 6
+RESULT_PART_1 = 7
+RESULT_PART_2 = 19
+#######################
+puzzle = importlib.import_module("advent2022.day" + str(DAY))
 
 
 class TestDay6(unittest.TestCase):
     def test_part1(self):
-        data = day6.load_and_parse_data(6, True)
-        self.assertEqual(day6.solve_part_1(data), 7)
+        data = puzzle.load_and_parse_data(6, True)
+        self.assertEqual(puzzle.solve_part_1(data), RESULT_PART_1)
 
     def test_part2(self):
-        data = day6.load_and_parse_data(6, True)
-        self.assertEqual(day6.solve_part_2(data), 19)
+        data = puzzle.load_and_parse_data(6, True)
+        self.assertEqual(puzzle.solve_part_2(data), RESULT_PART_2)

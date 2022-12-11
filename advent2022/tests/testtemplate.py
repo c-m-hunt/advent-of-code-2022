@@ -1,10 +1,11 @@
 import unittest
+import importlib
 # Change the day imprt, day number and expected results
-from advent2022 import day7 as puzzle
 DAY = None
 RESULT_PART_1 = None
 RESULT_PART_2 = None
 #######################
+puzzle = importlib.import_module("advent2022.day" + str(DAY))
 
 
 class TestDay(unittest.TestCase):

@@ -1,7 +1,10 @@
 import unittest
-from advent2022 import day10 as puzzle
+import importlib
+# Change the day imprt, day number and expected results
 DAY = 10
 RESULT_PART_1 = 13140
+#######################
+puzzle = importlib.import_module("advent2022.day" + str(DAY))
 
 
 class TestDay(unittest.TestCase):

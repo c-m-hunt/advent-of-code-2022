@@ -1,9 +1,12 @@
+from typing import List
+
+from advent2022 import utils
 
 
-filename = "./input/2.txt"
-with open(filename) as file:
-    lines = file.readlines()
-    lines = [line.rstrip().split((" ")) for line in lines]
+def load_and_parse_data(day: int, test: bool = False) -> List[str]:
+    data = utils.get_input(day, test)
+    return [line.rstrip().split((" ")) for line in data]
+
 
 pts = {
     "X": 1,
@@ -30,35 +33,38 @@ lose = {
 }
 
 
-points = []
-for game in lines:
-    game_points = 0
-    if game[1] == lose[game[0]]:
-        game_points += 6
-    elif game[1] == draw[game[0]]:
-        game_points += 3
-    game_points += pts[game[1]]
-    points.append(game_points)
+def solve_part_1(data):
+    points = []
+    for game in data:
+        game_points = 0
+        if game[1] == lose[game[0]]:
+            game_points += 6
+        elif game[1] == draw[game[0]]:
+            game_points += 3
+        game_points += pts[game[1]]
+        points.append(game_points)
 
-print("Part 1:", sum(points))
+    return sum(points)
 
-points = []
-for game in lines:
 
-    my_choice = ""
-    if game[1] == "X":
-        my_choice = win[game[0]]
-    elif game[1] == "Y":
-        my_choice = draw[game[0]]
-    elif game[1] == "Z":
-        my_choice = lose[game[0]]
+def solve_part_2(data):
+    points = []
+    for game in data:
 
-    game_points = 0
-    if my_choice == lose[game[0]]:
-        game_points += 6
-    elif my_choice == draw[game[0]]:
-        game_points += 3
-    game_points += pts[my_choice]
-    points.append(game_points)
+        my_choice = ""
+        if game[1] == "X":
+            my_choice = win[game[0]]
+        elif game[1] == "Y":
+            my_choice = draw[game[0]]
+        elif game[1] == "Z":
+            my_choice = lose[game[0]]
 
-print("Part 2:", sum(points))
+        game_points = 0
+        if my_choice == lose[game[0]]:
+            game_points += 6
+        elif my_choice == draw[game[0]]:
+            game_points += 3
+        game_points += pts[my_choice]
+        points.append(game_points)
+
+    return sum(points)

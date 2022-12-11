@@ -1,9 +1,11 @@
 import unittest
-from advent2022 import day8 as puzzle
-
+import importlib
+# Change the day imprt, day number and expected results
 DAY = 8
 RESULT_PART_1 = 21
 RESULT_PART_2 = 8
+#######################
+puzzle = importlib.import_module("advent2022.day" + str(DAY))
 
 
 class TestDay(unittest.TestCase):
