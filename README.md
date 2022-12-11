@@ -6,7 +6,7 @@ Open in VS Code and open Devcontainer
 ## Run
 From the terminal inside the Devcontainer...
 ```
-poetry run python advent2022/day{day_number}.py
+ poetry run python main.py 11
 ```
 
 ## To run watching tests
