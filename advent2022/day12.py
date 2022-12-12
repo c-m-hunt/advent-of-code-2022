@@ -2,6 +2,8 @@ from typing import List, Tuple, Optional
 import numpy as np
 
 from advent2022 import utils
+import sys
+sys.setrecursionlimit(5000)
 
 
 def load_and_parse_data(day: int, test: bool = False) -> List[str]:
@@ -12,21 +14,53 @@ def load_and_parse_data(day: int, test: bool = False) -> List[str]:
 char_map = {
     c: i
     for i, c in enumerate(
-        "abcdefghijklmnopqrstuvwxyz"
+        "SabcdefghijklmnopqrstuvwxyzE"
     )
 }
 
 
 def get_start_and_end_points(grid):
+    global char_map
     start = None
     target = None
+    max_value = 0
     for i in range(grid.shape[0]):
         for j in range(grid.shape[1]):
+            if char_map.get(grid[i, j], 0) > max_value:
+                max_value = char_map[grid[i, j]]
             if grid[i, j] == 'S':
                 start = (i, j)
             if grid[i, j] == 'E':
                 target = (i, j)
     return start, target
+
+
+move = {
+    "up": lambda x: (x[0] - 1, x[1]),
+    "down": lambda x: (x[0] + 1, x[1]),
+    "left": lambda x: (x[0], x[1] - 1),
+    "right": lambda x: (x[0], x[1] + 1),
+}
+
+points_visited = None
+route = []
+
+
+def valid_move(grid, from_point, to_point):
+    try:
+        from_point_value = char_map.get(
+            grid[from_point[0], from_point[1]], None)
+        to_point_value = char_map.get(grid[to_point[0], to_point[1]], None)
+        if grid[to_point[0], to_point[1]] in ["S", "E"]:
+            return True
+        if from_point_value - to_point_value <= 1:
+            return True
+        return False
+    except Exception:
+        return False
+
+
+routes = []
 
 
 def get_directions(grid, point):
@@ -37,65 +71,38 @@ def get_directions(grid, point):
         "right": grid[point[0], point[1] + 1] if point[1] + 1 < grid.shape[1] else None,
     }
 
-    return {
-        "up": char_map.get(directions["up"], -1 if directions["up"] == "S" else None),
-        "down": char_map.get(directions["down"], -1 if directions["down"] == "S" else None),
-        "left": char_map.get(directions["left"], -1 if directions["left"] == "S" else None),
-        "right": char_map.get(directions["right"], -1 if directions["right"] == "S" else None),
+    dir_vals = {
+        "up": char_map.get(directions["up"], None),
+        "down": char_map.get(directions["down"], None),
+        "left": char_map.get(directions["left"], None),
+        "right": char_map.get(directions["right"], None),
     }
 
-
-move = {
-    "up": lambda x: (x[0] - 1, x[1]),
-    "down": lambda x: (x[0] + 1, x[1]),
-    "left": lambda x: (x[0], x[1] - 1),
-    "right": lambda x: (x[0], x[1] + 1),
-}
-
-
-def get_available_points(grid, point) -> Optional[Tuple[int, int]]:
-    directions = get_directions(grid, point)
-    curr_value = char_map.get(grid[point[0], point[1]], None)
-    sort_dir = True if curr_value is None else False
     sorted_directions = dict(sorted(
-        directions.items(), key=lambda x: x[1] if x[1] else 0, reverse=sort_dir))
-
-    available_points = []
-    for direction, value in sorted_directions.items():
-        if value is not None and (
-            curr_value is None or value == -
-                1 or (value == curr_value - 1) or value >= curr_value
-        ):
-            available_points.append(move[direction]((point[0], point[1])))
-            if curr_value is None:
-                break
-    return available_points
-
-
-step_count = 0
-points_visited = None
-route = []
+        dir_vals.items(), key=lambda x: x[1] if x[1] else 0))
+    return sorted_directions.keys()
 
 
 def solve_map(grid, start, target):
     global step_count
     if start == target:
-        return True
-
-    step_count += 1
-    available_points = get_available_points(grid, target)
-    for point in available_points:
-        route.append(point)
-        if points_visited[point[0], point[1]] == 1:
-            continue
-        points_visited[point[0], point[1]] = 1
-        if solve_map(grid, start, point):
-            return True
-        points_visited[point[0], point[1]] = 0
-        step_count -= 1
-        route.pop()
-        print(route)
+        routes.append(route.copy())
+        print(len(route))
         return False
+
+    for direction in get_directions(grid, target):
+        new_point = move[direction](target)
+        if (
+            new_point[0] >= 0 and
+            new_point[1] >= 0 and
+            valid_move(grid, target, new_point) and
+            points_visited[new_point[0], new_point[1]] == 0
+        ):
+            route.append(new_point)
+            points_visited[new_point[0], new_point[1]] = 1
+            if solve_map(grid, start, new_point):
+                return True
+            points_visited[new_point[0], new_point[1]] = 0
     return False
 
 
@@ -104,10 +111,15 @@ def solve_part_1(data):
     print(start, end)
     global points_visited
     points_visited = np.zeros(data.shape)
-    resolved = solve_map(data, start, end)
-    print(resolved)
-    print(route)
-    return step_count
+    try:
+        resolved = solve_map(data, start, end)
+        print(resolved)
+        print(route)
+        print("Length", len(routes))
+        print(min([len(r) for r in routes]))
+    except Exception as e:
+        print(e)
+    return min([len(r) for r in routes])
 
 
 def solve_part_2(data):
