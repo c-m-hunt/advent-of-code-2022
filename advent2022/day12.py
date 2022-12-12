@@ -3,7 +3,7 @@ import numpy as np
 
 from advent2022 import utils
 import sys
-sys.setrecursionlimit(5000)
+# sys.setrecursionlimit(5000)
 
 
 def load_and_parse_data(day: int, test: bool = False) -> List[str]:
@@ -47,17 +47,19 @@ route = []
 
 
 def valid_move(grid, from_point, to_point):
-    try:
-        from_point_value = char_map.get(
-            grid[from_point[0], from_point[1]], None)
-        to_point_value = char_map.get(grid[to_point[0], to_point[1]], None)
-        if grid[to_point[0], to_point[1]] in ["S", "E"]:
-            return True
-        if from_point_value - to_point_value <= 1:
-            return True
+    # try:
+    if 0 > to_point[0] or to_point[0] >= grid.shape[0]:
         return False
-    except Exception:
-        return False
+    from_point_value = char_map.get(
+        grid[from_point[0], from_point[1]], None)
+    to_point_value = char_map.get(grid[to_point[0], to_point[1]], None)
+    if grid[to_point[0], to_point[1]] in ["S", "E"]:
+        return True
+    if from_point_value - to_point_value <= 1:
+        return True
+    return False
+    # except Exception:
+    #     return False
 
 
 routes = []
@@ -84,26 +86,30 @@ def get_directions(grid, point):
 
 
 def solve_map(grid, start, target):
-    global step_count
-    if start == target:
-        routes.append(route.copy())
-        print(len(route))
-        return False
 
-    for direction in get_directions(grid, target):
-        new_point = move[direction](target)
-        if (
-            new_point[0] >= 0 and
-            new_point[1] >= 0 and
-            valid_move(grid, target, new_point) and
-            points_visited[new_point[0], new_point[1]] == 0
-        ):
-            route.append(new_point)
-            points_visited[new_point[0], new_point[1]] = 1
-            if solve_map(grid, start, new_point):
-                return True
-            points_visited[new_point[0], new_point[1]] = 0
-    return False
+    calc_grid = np.zeros(grid.shape)
+    visited_grid = np.zeros(grid.shape)
+    visited_grid[target[0], target[1]] = 1
+    moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+    def recurse(point):
+        for m in moves:
+            new_point = (point[0] + m[0], point[1] + m[1])
+            if (0 > new_point[0] or new_point[0] >= grid.shape[0]
+                    or 0 > new_point[1] or new_point[1] >= grid.shape[1]):
+                continue
+            if visited_grid[new_point[0], new_point[1]] == 1:
+                continue
+            if valid_move(grid, point, new_point):
+                calc_grid[new_point[0], new_point[1]
+                          ] = calc_grid[point[0], point[1]] + 1
+                visited_grid[new_point[0], new_point[1]] = 1
+
+                recurse(new_point)
+            print(calc_grid)
+    recurse(target)
+    print(calc_grid)
+    return calc_grid[start[0], start[1]]
 
 
 def solve_part_1(data):
@@ -111,14 +117,14 @@ def solve_part_1(data):
     print(start, end)
     global points_visited
     points_visited = np.zeros(data.shape)
-    try:
-        resolved = solve_map(data, start, end)
-        print(resolved)
-        print(route)
-        print("Length", len(routes))
-        print(min([len(r) for r in routes]))
-    except Exception as e:
-        print(e)
+    # try:
+    resolved = solve_map(data, start, end)
+    print(resolved)
+    print(route)
+    print("Length", len(routes))
+    print(min([len(r) for r in routes]))
+    # except Exception as e:
+    #     print(e)
     return min([len(r) for r in routes])
 
 
