@@ -8,7 +8,7 @@ def load_and_parse_data(day: int, test: bool = False) -> List[str]:
     return np.array([[*s] for s in data])
 
 
-char_map = {
+CHAR_MAP = {
     c: i
     for i, c in enumerate(
         "SabcdefghijklmnopqrstuvwxyzE"
@@ -26,14 +26,13 @@ def get_all_points_of_value(grid, value):
 
 
 def get_start_and_end_points(grid):
-    global char_map
     start = None
     target = None
     max_value = 0
     for i in range(grid.shape[0]):
         for j in range(grid.shape[1]):
-            if char_map.get(grid[i, j], 0) > max_value:
-                max_value = char_map[grid[i, j]]
+            if CHAR_MAP.get(grid[i, j], 0) > max_value:
+                max_value = CHAR_MAP[grid[i, j]]
             if grid[i, j] == 'S':
                 start = (i, j)
             if grid[i, j] == 'E':
@@ -41,20 +40,12 @@ def get_start_and_end_points(grid):
     return start, target
 
 
-move = {
-    "up": lambda x: (x[0] - 1, x[1]),
-    "down": lambda x: (x[0] + 1, x[1]),
-    "left": lambda x: (x[0], x[1] - 1),
-    "right": lambda x: (x[0], x[1] + 1),
-}
-
-
 def valid_move(grid, from_point, to_point):
     if 0 > to_point[0] or to_point[0] >= grid.shape[0]:
         return False
-    from_point_value = char_map.get(
+    from_point_value = CHAR_MAP.get(
         grid[from_point[0], from_point[1]], None)
-    to_point_value = char_map.get(grid[to_point[0], to_point[1]], None)
+    to_point_value = CHAR_MAP.get(grid[to_point[0], to_point[1]], None)
     if from_point_value - to_point_value >= -1:
         return True
     return False
@@ -77,8 +68,7 @@ def solve_map(grid, start, target):
                 if grid[new_point[0], new_point[1]] == "S":
                     continue
                 if valid_move(grid, m_f, new_point):
-                    calc_grid[new_point[0], new_point[1]
-                              ] = step
+                    calc_grid[new_point[0], new_point[1]] = step
                     next_moves_to_test.append(new_point)
                     if new_point == target:
                         return calc_grid[target[0], target[1]]
