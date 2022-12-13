@@ -16,6 +16,15 @@ char_map = {
 }
 
 
+def get_all_points_of_value(grid, value):
+    points = []
+    for i in range(grid.shape[0]):
+        for j in range(grid.shape[1]):
+            if grid[i, j] == value:
+                points.append((i, j))
+    return points
+
+
 def get_start_and_end_points(grid):
     global char_map
     start = None
@@ -72,10 +81,11 @@ def solve_map(grid, start, target):
                               ] = step
                     next_moves_to_test.append(new_point)
                     if new_point == target:
-                        print(calc_grid)
                         return calc_grid[target[0], target[1]]
         moves_to_test = next_moves_to_test.copy()
         next_moves_to_test = []
+        if len(moves_to_test) == 0:
+            return None
 
 
 def solve_part_1(data):
@@ -85,4 +95,10 @@ def solve_part_1(data):
 
 
 def solve_part_2(data):
-    pass
+    start, end = get_start_and_end_points(data)
+    lowest_points = [start]
+    lowest_points.extend(get_all_points_of_value(data, 'a'))
+    distances = []
+    for p in lowest_points:
+        distances.append(solve_map(data, p, end))
+    return min([d for d in distances if d is not None])
