@@ -38,13 +38,11 @@ def compare_pair(left, right):
         right = [right]
 
     index = 0
-    while True:
-        l = left[index] if index < len(left) else None
+    l_len, r_len = len(left), len(right)
+
+    for i in range(l_len):
+        l = left[i]
         r = right[index] if index < len(right) else None
-        if l is None and r is None:
-            return True
-        if l is None:
-            return True
         if r is None:
             return False
         compare = compare_pair(l, r)
@@ -52,6 +50,9 @@ def compare_pair(left, right):
             index += 1
             continue
         return compare
+    if l_len < r_len:
+        return True
+    return None
 
 
 def solve(pairs):
@@ -60,17 +61,41 @@ def solve(pairs):
     for pair in pairs:
         left, right = pair
         correct = compare_pair(left, right)
-        print(left, right, correct, pair_index)
         correct_count += pair_index if correct else 0
         pair_index += 1
 
     return correct_count
 
 
+def swapPositions(list, pos1, pos2):
+    list[pos1], list[pos2] = list[pos2], list[pos1]
+    return list
+
+
+def sort(packets):
+    swaps = 0
+    while True:
+        swaps = 0
+        for j in range(len(packets) - 1):
+            comp = compare_pair(packets[j], packets[j + 1])
+            if comp is False:
+                swaps += 1
+                packets = swapPositions(packets, j, j + 1)
+        if swaps == 0:
+            break
+    return packets
+
+
 def solve_part_1(data):
-    # 6695 too high
     return solve(data)
 
 
 def solve_part_2(data):
-    pass
+    dividers = [[2]], [[6]]
+    packets = [*dividers]
+    for packet in data:
+        packets.extend(packet)
+    packets = sort(packets)
+    divider_idxs = [i+1 for i,
+                    packet in enumerate(packets) if packet in dividers]
+    return divider_idxs[0] * divider_idxs[1]

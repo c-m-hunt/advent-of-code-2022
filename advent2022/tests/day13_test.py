@@ -3,7 +3,7 @@ import importlib
 # Change the day imprt, day number and expected results
 DAY = 13
 RESULT_PART_1 = 13
-RESULT_PART_2 = None
+RESULT_PART_2 = 140
 #######################
 puzzle = importlib.import_module("advent2022.day" + str(DAY))
 
