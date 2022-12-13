@@ -28,11 +28,8 @@ def get_all_points_of_value(grid, value):
 def get_start_and_end_points(grid):
     start = None
     target = None
-    max_value = 0
     for i in range(grid.shape[0]):
         for j in range(grid.shape[1]):
-            if CHAR_MAP.get(grid[i, j], 0) > max_value:
-                max_value = CHAR_MAP[grid[i, j]]
             if grid[i, j] == 'S':
                 start = (i, j)
             if grid[i, j] == 'E':
