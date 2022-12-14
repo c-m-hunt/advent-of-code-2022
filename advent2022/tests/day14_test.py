@@ -2,8 +2,8 @@ import unittest
 import importlib
 # Change the day imprt, day number and expected results
 DAY = 14
-RESULT_PART_1 = 14
-RESULT_PART_2 = None
+RESULT_PART_1 = 24
+RESULT_PART_2 = 93
 #######################
 puzzle = importlib.import_module("advent2022.day" + str(DAY))
 
